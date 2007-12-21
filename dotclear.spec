@@ -18,6 +18,7 @@ Requires(pre):  apache-mpm >= 2.0.54
 Requires:       apache-mod_php php-xml php-mysql
 BuildArch:	noarch
 BuildRequires:	file
+BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 dotclear is a multilingual web application developed in php. 
