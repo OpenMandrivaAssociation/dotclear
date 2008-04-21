@@ -1,6 +1,6 @@
 %define	name	dotclear
 %define	version	1.2.5
-%define	release	%mkrel 3
+%define	release	%mkrel 4
 %define order	71
 
 Name:		%{name}
@@ -67,7 +67,7 @@ if [ -e %{_sbindir}/ADVXctl ]; then %{_sbindir}/ADVXctl update;fi
 %_defaultdocdir/%{name}/README.urpmi
 %dir %{_var}/www/%{name}
 %{_var}/www/%{name}/*.php
-%{_var}/www/%{name}/conf
+%attr(0755,apache,apache) %{_var}/www/%{name}/conf
 %{_var}/www/%{name}/ecrire
 %{_var}/www/%{name}/images
 %{_var}/www/%{name}/inc
