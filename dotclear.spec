@@ -1,23 +1,26 @@
 %define	name	dotclear
-%define	version	1.2.5
-%define	release	%mkrel 5
+%define	version	2.1.4
+%define	release	%mkrel 1
 %define order	71
 
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
 Summary:	Web-based blog
-License:	GPL
+License:	GPLv2
 Group:		System/Servers
 URL:		http://www.dotclear.net
 Source0:	%{name}-%{version}.tar.bz2
 Source1:	%{name}-apache.conf.bz2
 Source2:	README.urpmi
-Requires(pre):  apache-conf >= 2.0.54
-Requires(pre):  apache-mpm >= 2.0.54
-Requires:       apache-mod_php php-xml php-mysql
+Requires(pre):  mod_php >= 2.0.54-5mdk    
+Requires(pre):  apache >= 2.0.54-5mdk     
+Requires(pre):  rpm-helper   
+Requires:		php-xml 
+Requires:		php-iconv
+Requires:		php-mbstring
 BuildArch:	noarch
-BuildRequires:	file
+
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
@@ -28,51 +31,54 @@ but also can be used in a multi-user mode with several right levels.
 %prep
 %setup -q -n %{name}
 
+	   
 %build
 
 %install
-rm -rf  $RPM_BUILD_ROOT
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 
 # install files
-install -d -m 755 $RPM_BUILD_ROOT%{_var}/www/%{name}
-install -d -m 755 $RPM_BUILD_ROOT%_defaultdocdir/%{name}
-install -m 644 %{SOURCE2} $RPM_BUILD_ROOT%_defaultdocdir/%{name}
-mv CHANGELOG COPYING LISEZMOI.txt VERSION $RPM_BUILD_ROOT%_defaultdocdir/%{name}
-cp -aRf * $RPM_BUILD_ROOT%{_var}/www/%{name}
-rm -f $RPM_BUILD_ROOT%_defaultdocdir/%{name}/{CHANGELOG,COPYING,LISEZMOI.txt,VERSION}
+install -d -m 755 %{buildroot}%{_var}/www/%{name}
+install -d -m 755 %{buildroot}%_defaultdocdir/%{name}
+install -m 644 %{SOURCE2} %{buildroot}%_defaultdocdir/%{name}
+mv CHANGELOG %{buildroot}%_defaultdocdir/%{name}
+cp -aRf * %{buildroot}%{_var}/www/%{name}
+rm -f %{buildroot}%_defaultdocdir/%{name}/CHANGELOG
 
 # apache configuration
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf/webapps.d
-bzcat %{SOURCE1} > $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf/webapps.d/%{order}_%{name}.conf
+install -d -m 755 %{buildroot}%{_webappconfdir}
+bzcat %{SOURCE1} > %{buildroot}%{_webappconfdir}/%{order}_%{name}.conf
 
 # remove .htaccess files
-find $RPM_BUILD_ROOT%{_var}/www/%{name} -name .htaccess -exec rm -f {} \;
+find %{buildroot}%{_var}/www/%{name} -name .htaccess -exec rm -f {} \;
+
+# fix exectuable bit 
+find %{buildroot}%{_var}/www/%{name} -type f -exec chmod 644 {} \;
+chmod 755 %{buildroot}%{_var}/www/%{name}/inc/dbschema/upgrade-cli.php
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
-if [ -e %{_sbindir}/ADVXctl ]; then %{_sbindir}/ADVXctl update;fi
-if [ -f %{_var}/lock/subsys/httpd ]; then
-    %{_initrddir}/httpd restart 1>&2;
-fi
+%_post_webapp
 
 %postun
-if [ -e %{_sbindir}/ADVXctl ]; then %{_sbindir}/ADVXctl update;fi
+%_postun_webapp
 
 %files
 %defattr(-,root,root)
-%config(noreplace) %{_sysconfdir}/httpd/conf/webapps.d/%{order}_%{name}.conf
+%config(noreplace) %_webappconfdir/%{order}_%{name}.conf
 %dir %_defaultdocdir/%{name}
 %_defaultdocdir/%{name}/README.urpmi
 %dir %{_var}/www/%{name}
 %{_var}/www/%{name}/*.php
-%attr(0755,apache,apache) %{_var}/www/%{name}/conf
-%{_var}/www/%{name}/ecrire
-%{_var}/www/%{name}/images
-%{_var}/www/%{name}/inc
-%{_var}/www/%{name}/install
-%{_var}/www/%{name}/l10n
-%{_var}/www/%{name}/layout
-%{_var}/www/%{name}/share
+%{_var}/www/%{name}/inc/
+%{_var}/www/%{name}/admin
+%{_var}/www/%{name}/cache
+%{_var}/www/%{name}/db
+%{_var}/www/%{name}/locales
+%{_var}/www/%{name}/plugins
+%{_var}/www/%{name}/public
 %{_var}/www/%{name}/themes
+%dir %attr(0775,root,apache) %{_var}/www/%{name}/cache
+%dir %attr(0775,root,apache) %{_var}/www/%{name}/inc/
