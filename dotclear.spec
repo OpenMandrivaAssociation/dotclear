@@ -1,5 +1,5 @@
 %define	name	dotclear
-%define	version	2.1.4
+%define	version	2.1.5
 %define	release	%mkrel 1
 %define order	71
 
@@ -10,7 +10,7 @@ Summary:	Web-based blog
 License:	GPLv2
 Group:		System/Servers
 URL:		http://www.dotclear.net
-Source0:	%{name}-%{version}.tar.bz2
+Source0:	http://download.dotclear.org/latest/%{name}-%{version}.tar.gz
 Source1:	%{name}-apache.conf.bz2
 Source2:	README.urpmi
 Requires(pre):  mod_php >= 2.0.54-5mdk    
