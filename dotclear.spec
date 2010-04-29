@@ -1,6 +1,6 @@
 %define	name	dotclear
-%define	version	2.1.5
-%define	release	%mkrel 2
+%define	version	2.1.6
+%define	release	%mkrel 1
 
 Name:		%{name}
 Version:	%{version}
@@ -10,6 +10,7 @@ License:	GPLv2
 Group:		System/Servers
 URL:		http://www.dotclear.net
 Source0:	http://download.dotclear.org/latest/%{name}-%{version}.tar.gz
+Patch0:		php53.patch
 %if %mdkversion < 201010
 Requires(post):   rpm-helper
 Requires(postun):   rpm-helper
@@ -28,7 +29,8 @@ but also can be used in a multi-user mode with several right levels.
 
 %prep
 %setup -q -n %{name}
-	   
+%patch0 -p1
+
 %build
 
 %install
@@ -42,8 +44,6 @@ rm -f %{buildroot}%{_var}/www/%{name}/CHANGELOG
 # apache configuration
 install -d -m 755 %{buildroot}%{_webappconfdir}
 cat > %{buildroot}%{_webappconfdir}/%{name}.conf <<EOF
-
-
 Alias /dotclear /var/www/dotclear
 <Directory /var/www/dotclear>
     Order allow,deny
@@ -51,7 +51,7 @@ Alias /dotclear /var/www/dotclear
 </Directory>
 
 <Directory /var/www/dotclear/admin/install>
-    Order deny,allo
+    Order deny,allow
     Deny from all
     Allow from 127.0.0.1
     ErrorDocument 403 "Access denied per %{_webappconfdir}/%{name}.conf"
@@ -114,7 +114,7 @@ config file.
 
 Once that's done and the database server and web server have been started, 
  in your favourite web browser, enter following URL :
-http://hostname/dotclear/admin/install  and 
+http://hostname/dotclear/admin/install/wizard.php  and 
 follow the instructions given to you on the pages you see to set up the 
 database tables and begin publishing your blog.
 EOF
