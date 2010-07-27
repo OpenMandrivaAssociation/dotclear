@@ -1,5 +1,5 @@
 %define	name	dotclear
-%define	version	2.1.6
+%define	version	2.2
 %define	release	%mkrel 1
 
 Name:		%{name}
@@ -39,7 +39,9 @@ rm -rf %{buildroot}
 # install files
 install -d -m 755 %{buildroot}%{_var}/www/%{name}
 cp -aRf * %{buildroot}%{_var}/www/%{name}
-rm -f %{buildroot}%{_var}/www/%{name}/CHANGELOG
+for i in CHANGELOG CREDITS LICENSE README; do
+	rm -f %{buildroot}%{_var}/www/%{name}/$i
+done
 
 # apache configuration
 install -d -m 755 %{buildroot}%{_webappconfdir}
@@ -134,7 +136,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc README.urpmi CHANGELOG
+%doc README.urpmi CHANGELOG CREDITS LICENSE README
 %config(noreplace) %_webappconfdir/%{name}.conf
 %dir %{_var}/www/%{name}
 %{_var}/www/%{name}/*.php
