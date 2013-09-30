@@ -1,6 +1,6 @@
 Name:		dotclear
 Version:	2.2
-Release:	2
+Release:	3
 Summary:	Web-based blog
 License:	GPLv2
 Group:		System/Servers
