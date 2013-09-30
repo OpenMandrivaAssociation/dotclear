@@ -36,14 +36,11 @@ install -d -m 755 %{buildroot}%{_webappconfdir}
 cat > %{buildroot}%{_webappconfdir}/%{name}.conf <<EOF
 Alias /dotclear /var/www/dotclear
 <Directory /var/www/dotclear>
-    Order allow,deny
-    Allow from all
+    Require all granted
 </Directory>
 
 <Directory /var/www/dotclear/admin/install>
-    Order deny,allow
-    Deny from all
-    Allow from 127.0.0.1
+    Require host 127.0.0.1
     ErrorDocument 403 "Access denied per %{_webappconfdir}/%{name}.conf"
 </Directory>
 EOF
