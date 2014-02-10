@@ -1,0 +1,2 @@
+addFilter("E: non-standard-executable-perm.*")
+addFilter("E: non-standard-dir-perm.*")

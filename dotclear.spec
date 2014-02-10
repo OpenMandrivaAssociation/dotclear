@@ -1,11 +1,12 @@
 Name:		dotclear
-Version:	2.2
-Release:	3
+Version:	2.6.2
+Release:	1
 Summary:	Web-based blog
 License:	GPLv2
 Group:		System/Servers
 URL:		http://www.dotclear.net
 Source0:	http://download.dotclear.org/latest/%{name}-%{version}.tar.gz
+Source1:	%{name}.rpmlintrc
 Patch0:		php53.patch
 Requires:		php-xml 
 Requires:		php-iconv
@@ -107,11 +108,11 @@ database tables and begin publishing your blog.
 EOF
 
 %files
-%defattr(-,root,root)
-%doc README.urpmi CHANGELOG CREDITS LICENSE README
-%config(noreplace) %_webappconfdir/%{name}.conf
+%doc README.urpmi CHANGELOG CREDITS LICENSE
+%config(noreplace) %{_webappconfdir}/%{name}.conf
 %dir %{_var}/www/%{name}
 %{_var}/www/%{name}/*.php
+%{_var}/www/%{name}/*.md
 #%{_var}/www/%{name}/inc/
 %{_var}/www/%{name}/admin
 #%{_var}/www/%{name}/cache
@@ -123,74 +124,3 @@ EOF
 %attr(0775,root,apache) %{_var}/www/%{name}/cache
 %attr(0775,root,apache) %{_var}/www/%{name}/inc/
 
-
-%changelog
-* Tue Jul 27 2010 Jerome Martin <jmartin@mandriva.org> 2.2-1mdv2011.0
-+ Revision: 561176
-- Release 2.2
-
-* Thu Apr 29 2010 Jerome Martin <jmartin@mandriva.org> 2.1.6-1mdv2010.1
-+ Revision: 541031
-- Update to 2.1.6
- - Fixed against php 5.3
-
-* Mon Mar 01 2010 Guillaume Rousse <guillomovitch@mandriva.org> 2.1.5-2mdv2010.1
-+ Revision: 513175
-- rely on filetrigger for reloading apache configuration begining with 2010.1, rpm-helper macros otherwise
-- use herein documents instead of external source for apache configuration
-- no need to prefix apache configuration file with an ordering number
-- spec cleanup
-
-* Thu Feb 12 2009 Jerome Martin <jmartin@mandriva.org> 2.1.5-1mdv2009.1
-+ Revision: 339940
-- 2.1.5
-
-* Wed Feb 04 2009 Jerome Martin <jmartin@mandriva.org> 2.1.4-1mdv2009.1
-+ Revision: 337568
-- Updated to 2.1.4
-
-* Thu Aug 07 2008 Thierry Vignaud <tv@mandriva.org> 1.2.5-5mdv2009.0
-+ Revision: 266576
-- rebuild early 2009.0 package (before pixel changes)
-
-* Mon Apr 21 2008 Oden Eriksson <oeriksson@mandriva.com> 1.2.5-4mdv2009.0
-+ Revision: 196211
-- fix #22079
-
-  + Olivier Blin <oblin@mandriva.com>
-    - restore BuildRoot
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill re-definition of %%buildroot on Pixel's request
-
-* Mon Jun 25 2007 Oden Eriksson <oeriksson@mandriva.com> 1.2.5-3mdv2008.0
-+ Revision: 43878
-- Import dotclear
-
-
-
-* Mon Jun 25 2007 Oden Eriksson <oeriksson@mandriva.com> 1.2.5-3mdv2008.0
-- fix deps
-
-* Mon Jul 17 2006 Anne Nicolas <anne.nicolas@mandriva.com> 1.2.5-2mdk
-- fix php-mysql dependancy
-
-* Tue Jun 6 2006 Anne Nicolas <anne.nicolas@mandriva.com> 1.2.5-1mdk
-- security update
-
-* Thu Apr 20 2006 Anne Nicolas <anne.nicolas@mandriva.com> 1.2.4-1mdk
-- security update 
-- improve images management, and spam plugin
-
-* Mon Jan 23 2006 Anne Nicolas <anne.nicolas@mandriva.com> 1.2.3-2mdk
-- fix Apache configuration
-- install dotclear in /var/www to fit with Mandriva webapps policy
-
-* Wed Nov 30 2005 Anne Nicolas <anne.nicolas@mandriva.com> 1.2.3-1mdk
-- security update on session manager
-
-* Sat Oct 29 2005 Anne Nicolas <anne.nicolas@mandriva.com> 1.2.2-1mdk
-- security update on trackbacks
-
-* Fri Oct 21 2005 Anne Nicolas <anne.nicolas@mandriva.com> 1.2.1-1mdk
-- initial release

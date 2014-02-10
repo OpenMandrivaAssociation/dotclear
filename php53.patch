@@ -1,38 +1,22 @@
-Index: dotclear/plugins/widgets/class.widgets.php
-===================================================================
---- dotclear/plugins/widgets/class.widgets.php
-+++ dotclear/plugins/widgets/class.widgets.php	2010-04-29 20:43:53.000000000 +0200
-@@ -145,7 +145,7 @@
- 	public function call($i=0)
- 	{
- 		if (is_callable($this->public_callback)) {
--			return call_user_func($this->public_callback,$this,$i);
-+		  return call_user_func_array($this->public_callback,array(&$this,&$i));
- 		}
- 		return '<p>Callback not found for widget '.$this->id.'</p>';
- 	}
-Index: dotclear/inc/core/class.dc.core.php
-===================================================================
---- dotclear/inc/core/class.dc.core.php
-+++ dotclear/inc/core/class.dc.core.php	2010-04-29 20:43:23.000000000 +0200
-@@ -300,9 +300,11 @@
- 			array_shift($args);
- 			
+diff -Naur dotclear/inc/core/class.dc.core.php dotclear.new/inc/core/class.dc.core.php
+--- dotclear/inc/core/class.dc.core.php	2014-01-20 08:04:57.000000000 -0500
++++ dotclear.new/inc/core/class.dc.core.php	2014-02-10 03:28:44.663176076 -0500
+@@ -315,8 +315,11 @@
+ 
  			$res = '';
--			
+ 
 +			$Args=array();
-+			foreach ($args as $k => &$value) $Args[$k]=&$value;
-+ 			
++                        foreach ($args as $k => &$value) $Args[$k]=&$value;
++
  			foreach ($this->behaviors[$behavior] as $f) {
 -				$res .= call_user_func_array($f,$args);
-+				$res .= call_user_func_array($f,$Args);
++			        $res .= call_user_func_array($f,$Args);
  			}
- 			
+ 
  			return $res;
-Index: dotclear/inc/clearbricks/dblayer/dblayer.php
-===================================================================
---- dotclear/inc/clearbricks/dblayer/dblayer.php
-+++ dotclear/inc/clearbricks/dblayer/dblayer.php	2010-04-29 20:42:44.000000000 +0200
+diff -Naur dotclear/inc/libs/clearbricks/dblayer/dblayer.php dotclear.new/inc/libs/clearbricks/dblayer/dblayer.php
+--- dotclear/inc/libs/clearbricks/dblayer/dblayer.php	2014-01-20 08:04:58.000000000 -0500
++++ dotclear.new/inc/libs/clearbricks/dblayer/dblayer.php	2014-02-10 03:27:44.040171606 -0500
 @@ -705,7 +705,9 @@
  		if (isset($this->__extend[$f]))
  		{
@@ -44,3 +28,15 @@ Index: dotclear/inc/clearbricks/dblayer/dblayer.php
  		}
  		
  		trigger_error('Call to undefined method record::'.$f.'()',E_USER_ERROR);
+diff -Naur dotclear/plugins/widgets/class.widgets.php dotclear.new/plugins/widgets/class.widgets.php
+--- dotclear/plugins/widgets/class.widgets.php	2014-01-20 08:04:57.000000000 -0500
++++ dotclear.new/plugins/widgets/class.widgets.php	2014-02-10 03:27:44.039171606 -0500
+@@ -179,7 +179,7 @@
+ 	public function call($i=0)
+ 	{
+ 		if (is_callable($this->public_callback)) {
+-			return call_user_func($this->public_callback,$this,$i);
++		  return call_user_func_array($this->public_callback,array(&$this,&$i));
+ 		}
+ 		return '<p>Callback not found for widget '.$this->id.'</p>';
+ 	}
