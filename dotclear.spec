@@ -1,6 +1,6 @@
 Name:		dotclear
 Version:	2.6.2
-Release:	1
+Release:	2
 Summary:	Web-based blog
 License:	GPLv2
 Group:		System/Servers
@@ -41,7 +41,7 @@ Alias /dotclear /var/www/dotclear
 </Directory>
 
 <Directory /var/www/dotclear/admin/install>
-    Require host 127.0.0.1
+    Require local granted
     ErrorDocument 403 "Access denied per %{_webappconfdir}/%{name}.conf"
 </Directory>
 EOF
