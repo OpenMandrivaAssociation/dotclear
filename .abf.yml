@@ -1,5 +1,6 @@
 removed_sources:
   dotclear-2.2.tar.gz: 12295d80e98ba94243672f055b3007d17470df67
   dotclear-2.5.3.tar.gz: 05256d88d4fd77b8c1bf3d407eca8f5829bbc5e0
-sources:
   dotclear-2.6.2.tar.gz: 3a6911cbe5154888d380722ad4533cd1521b5424
+sources:
+  dotclear-2.6.3.tar.gz: c319228557cc8effe58a7e4b4dfd81b5aef8b737

@@ -1,7 +1,8 @@
 Name:		dotclear
-Version:	2.6.2
-Release:	2
+Version:	2.6.3
+Release:	1
 Summary:	Web-based blog
+
 License:	GPLv2
 Group:		System/Servers
 URL:		http://www.dotclear.net
@@ -123,4 +124,5 @@ EOF
 %{_var}/www/%{name}/themes
 %attr(0775,root,apache) %{_var}/www/%{name}/cache
 %attr(0775,root,apache) %{_var}/www/%{name}/inc/
+
 
