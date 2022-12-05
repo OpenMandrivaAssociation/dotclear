@@ -1,6 +1,6 @@
 Name:		dotclear
-Version:	2.6.3
-Release:	2
+Version:	2.23.1
+Release:	1
 Summary:	Web-based blog
 
 License:	GPLv2
@@ -8,7 +8,6 @@ Group:		System/Servers
 URL:		http://www.dotclear.net
 Source0:	http://download.dotclear.org/latest/%{name}-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
-Patch0:		php53.patch
 Requires:		php-xml 
 Requires:		php-iconv
 Requires:		php-mbstring
@@ -20,17 +19,16 @@ It provides personal blogs and trackbacks to react,
 but also can be used in a multi-user mode with several right levels.
 
 %prep
-%setup -q -n %{name}
-%patch0 -p1
+%autosetup -p1 -n %{name}
 
 %build
 
 %install
 # install files
-install -d -m 755 %{buildroot}%{_var}/www/%{name}
-cp -aRf * %{buildroot}%{_var}/www/%{name}
+install -d -m 755 %{buildroot}/srv/www/%{name}
+cp -aRf * %{buildroot}/srv/www/%{name}
 for i in CHANGELOG CREDITS LICENSE README; do
-	rm -f %{buildroot}%{_var}/www/%{name}/$i
+	rm -f %{buildroot}/srv/www/%{name}/$i
 done
 
 # apache configuration
@@ -48,11 +46,11 @@ Alias /dotclear /var/www/dotclear
 EOF
 
 # remove .htaccess files
-find %{buildroot}%{_var}/www/%{name} -name .htaccess -exec rm -f {} \;
+find %{buildroot}/srv/www/%{name} -name .htaccess -exec rm -f {} \;
 
 # fix exectuable bit 
-find %{buildroot}%{_var}/www/%{name} -type f -exec chmod 644 {} \;
-chmod 755 %{buildroot}%{_var}/www/%{name}/inc/dbschema/upgrade-cli.php
+find %{buildroot}/srv/www/%{name} -type f -exec chmod 644 {} \;
+chmod 755 %{buildroot}/srv/www/%{name}/inc/dbschema/upgrade-cli.php
 
 cat > README.urpmi <<EOF
 Dotclear is a database driven blogging program designed to make it exceedingly
@@ -111,18 +109,16 @@ EOF
 %files
 %doc README.urpmi CHANGELOG CREDITS LICENSE
 %config(noreplace) %{_webappconfdir}/%{name}.conf
-%dir %{_var}/www/%{name}
-%{_var}/www/%{name}/*.php
-%{_var}/www/%{name}/*.md
-#%{_var}/www/%{name}/inc/
-%{_var}/www/%{name}/admin
-#%{_var}/www/%{name}/cache
-%{_var}/www/%{name}/db
-%{_var}/www/%{name}/locales
-%{_var}/www/%{name}/plugins
-%{_var}/www/%{name}/public
-%{_var}/www/%{name}/themes
-%attr(0775,root,apache) %{_var}/www/%{name}/cache
-%attr(0775,root,apache) %{_var}/www/%{name}/inc/
-
-
+%dir /srv/www/%{name}
+/srv/www/%{name}/*.php
+/srv/www/%{name}/*.md
+#/srv/www/%{name}/inc/
+/srv/www/%{name}/admin
+#/srv/www/%{name}/cache
+/srv/www/%{name}/db
+/srv/www/%{name}/locales
+/srv/www/%{name}/plugins
+/srv/www/%{name}/public
+/srv/www/%{name}/themes
+%attr(0775,root,apache) /srv/www/%{name}/cache
+%attr(0775,root,apache) /srv/www/%{name}/inc/
