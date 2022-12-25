@@ -1,5 +1,5 @@
 Name:		dotclear
-Version:	2.23.1
+Version:	2.24
 Release:	1
 Summary:	Web-based blog
 
