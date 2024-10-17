@@ -5,7 +5,7 @@ Summary:	Web-based blog
 
 License:	GPLv2
 Group:		System/Servers
-URL:		http://www.dotclear.net
+URL:		https://www.dotclear.net
 Source0:	http://download.dotclear.org/latest/%{name}-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
 Requires:		php-xml 
